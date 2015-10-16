@@ -1,32 +1,35 @@
 require 'minitest/autorun'
+require 'shoulda/context'
 require_relative '../features/support/env'
 require_relative '../features/support/base_test_object'
 
 class TestBaseTestObject < Minitest::Test
 
-  def setup
-    @str_keys = BaseTestObject.new({'key1' => 'is a string'})
-  end
+  context 'a BaseTestObject' do
+    setup do
+      @str_keys = BaseTestObject.new({'key1' => 'is a string'})
+    end
 
-  # test initialization and getter
-  def test_string_key_getter
-    assert_equal('is a string', @str_keys.key1)
-  end
+    should 'initialize and read instance variables from a hash with string keys' do
+      assert_equal('is a string', @str_keys.key1)
+    end
 
-  def test_string_key_setter
-    @str_keys.key1 = 'a new value'
-    assert_equal('a new value', @str_keys.key1)
-  end
+    should 'set new values on assignment' do
+      @str_keys.key1 = 'a new value'
+      assert_equal('a new value', @str_keys.key1)
+    end
 
-  # test the current hash of instance variables is returned
-  def test_string_key_hash
-    assert_equal({'key1' => 'is a string'}, @str_keys.to_h)
-    @str_keys.key1 = 'a new value'
-    assert_equal({'key1' => 'a new value'}, @str_keys.to_h)
-  end
+    should 'return a hash of the initial instance variables' do
+      assert_equal({'key1' => 'is a string'}, @str_keys.to_h)
+    end
 
-  # test json structure of instance variables
-  def test_string_key_json
-    assert_equal('{"key1":"is a string"}', @str_keys.to_j)
+    should 'return a hash of the current instance variables' do
+      @str_keys.key1 = 'a new value'
+      assert_equal({'key1' => 'a new value'}, @str_keys.to_h)
+    end
+
+    should 'return a json string of the initial instance variables' do
+      assert_equal('{"key1":"is a string"}', @str_keys.to_j)
+    end
   end
 end
