@@ -24,7 +24,6 @@ class TestBaseTestObject < Minitest::Test
       assert_equal('a new value', @str_keys.key1)
     end
 
-    # TODO: figure out why this is failing
     should 'set new values on assignment to symbol keys' do
       @sym_keys.key2 = 'a newer value'
       assert_equal('a newer value', @sym_keys.key2)
@@ -55,6 +54,14 @@ class TestBaseTestObject < Minitest::Test
     should 'return its key as a string' do
       assert_equal('key1', @str_keys.key1_strname)
       assert_equal('key3', @sym_keys.key3_strname)
+    end
+
+    should 'be able to add new instance variables' do
+      @str_keys.add_instance_variable 'key4', 'new instance variable key4'
+      assert_equal('new instance variable key4', @str_keys.key4)
+
+      @sym_keys.add_instance_variable :key6, 'a value for sym key6'
+      assert_equal('a value for sym key6', @sym_keys.key6)
     end
 
   end
